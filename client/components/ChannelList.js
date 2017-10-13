@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 import store from '../store';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
 
 
 // These values are all hardcoded...for now!
@@ -13,9 +14,9 @@ import { connect } from 'react-redux';
 
 class ChannelList extends Component {
 
-  constructor () {
-    super();
-    this.state = store.getState();
+  constructor (props) {
+    super(props);
+    // this.state = store.getState();
   }
 
   // replaced by mapStateToProps
@@ -27,23 +28,27 @@ class ChannelList extends Component {
   //   this.unsubscribe();
   // }
 
+
   render () {
 
-    const { messages } = this.state;
-
+    const { messages, channels } = this.props;
     return (
       <ul>
-        this.state.channels.map(channel => {
-
-          <li>
-            console.log(channels)
-            <NavLink to={RANDOM_CHANNEL} activeClassName="active">
-              <span>really_random</span>
+        {
+        channels.length && channels.map(channel => {
+          return (
+          <li key={channel.id}>
+            <NavLink to={`/channels/${channel.id}`} activeClassName="active">
+              <span># {channel.name}</span>
               <span className="badge">{ messages.filter(message => message.channelId === 1).length }</span>
             </NavLink>
           </li>
+          )
         })
-
+      }
+        <li>
+          <NavLink to="/new-channel">Create a channel...</NavLink>
+        </li>
       </ul>
     );
   }
@@ -56,5 +61,8 @@ const mapStateToProps = function (state) {
   };
 };
 
-/** Write your `connect` component below! **/
-export default ChannelListContainer = connect(mapStateToProps)(ChannelList);
+const channelListWithRouter = withRouter(ChannelList);
+
+
+const ChannelListContainer = connect(mapStateToProps)(ChannelList);
+export default withRouter(ChannelListContainer)

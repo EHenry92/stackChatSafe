@@ -1,5 +1,5 @@
 import io from 'socket.io-client';
-import store, { getMessage } from './store';
+import store, { getMessage, fetchNewChannels, getNewChannel } from './store';
 
 const socket = io(window.location.origin);
 
@@ -10,6 +10,9 @@ socket.on('connect', () => {
     store.dispatch(getMessage(message));
   });
 
+  socket.on('new-channel', newChannel => {
+    store.dispatch(getNewChannel(newChannel));
+  })
 });
 
 export default socket;

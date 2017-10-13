@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ChannelList from './ChannelList';
+import store from '../store';
 
 export default class Sidebar extends Component {
 
